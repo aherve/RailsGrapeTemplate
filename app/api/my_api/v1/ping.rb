@@ -5,11 +5,11 @@ module MyApi
 
       desc "returns either 'pong', or the 'ping' parameter"
       params do 
-        optional :ping, desc: "a ping parameter"
+        optional :ping, desc: "a ping parameter (default=pong)", default: :pong
       end
       get :ping do 
         h = HashWithIndifferentAccess.new
-        h[:ping] = ( params[:ping] || :pong )
+        h[:ping] = params[:ping]
         present :ping, h, with: MyApi::V1::Entities::Ping
       end
 

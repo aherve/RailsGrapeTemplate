@@ -36,7 +36,8 @@ end
 
 gem 'grape'
 gem 'grape-entity'
-#gem 'grape-swagger-rails'
+gem 'grape-swagger-rails'
+#gem 'grape-swagger'
 
 #gem 'redis-rails'
 #gem 'redis-store'
