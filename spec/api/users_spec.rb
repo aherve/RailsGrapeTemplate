@@ -1,17 +1,38 @@
 describe MyApi::V1::Users do 
 
-  before do 
+  before(:each) do 
+    logout
     User.delete_all
   end
 
   #{{{ user/me
   describe :me do 
     subject(:get_me) { get '/api/users/me'}
-    context "when logged out" do 
-      it {is_expected.to respond_with 401}
+    it "respond with 401 when logged out" do 
+      get_me
+      expect(response.status).to eq 401
     end
-    context "when logged in" do 
-      it {is_expected.to respond_with 200}
+    it "responds with 200 when logged in" do 
+      @user = FactoryGirl.create(:user)
+      login(@user)
+      get_me
+      expect(response.status).to eq 200
+    end
+  end
+  #}}}
+
+  #{{{ sign_in
+  describe :sign_in do 
+    subject(:sign_in) { 
+      user = FactoryGirl.create(:user)
+      user.confirm! rescue nil
+      post 'api/users/sign_in',{user: {password: user.password, email: user.email}}
+      }
+    it "signs in" do 
+      expect{sign_in}.to change{
+        get 'api/users/me'
+        json_response.has_key?("user")
+      }.from(false).to(true)
     end
   end
   #}}}
@@ -30,7 +51,7 @@ describe MyApi::V1::Users do
 
     it "should login the user" do 
       sign_up
-      get '/users/me'
+      get '/api/users/me'
       expect(response.status).to eq 200
     end
 

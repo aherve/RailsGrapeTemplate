@@ -17,3 +17,11 @@ end
 def json_response
   JSON.parse(@response.body)
 end
+
+def login(user)
+  post '/api/users/sign_in', {user: {email: user.email, password: user.password}}
+end
+
+def logout
+  get '/api/users/sign_out'
+end
