@@ -43,7 +43,7 @@ module MyApi
         #{{{ signup
         desc "signup user"
         params do 
-          requires :user, type: Hash do 
+          optional :user, type: Hash do 
             requires :email, type: String, desc: "user's email"
             requires :password, type: String, desc: "password"
             requires :password_confirmation, type: String, desc: "password_confirmation"
